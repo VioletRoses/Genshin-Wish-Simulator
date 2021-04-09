@@ -1,5 +1,5 @@
 class Banner {
-    name;
+    title;
     pity = 0;
 
     T3Drops = [SKYRIDER_SWORD, HARBINGER_OF_DAWN, FILLET_BLADE, DARK_IRON_SWORD, COOL_STEEL, WHITE_TASSEL, HALBERD, BLACK_TASSEL, WHITE_IRON_GREATSWORD, SKYRIDER_GREATSWORD, QUARTZ, FERROUS_SHADOW, DEBATE_CLUB, BLOODTAINTED_GREATSWORD, TWIN_NEPHRITE, THRILLING_TALES_OF_DRAGON_SLAYERS, OTHERWORLDLY_STORY, MAGIC_GUIDE, EMERALD_ORB, AMBER_CATALYST, SLINGSHOT, SHARPSHOOTERS_OATH, RECURVE_BOW, RAVEN_BOW, MESSENGER, EBONY_BOW];
@@ -7,93 +7,25 @@ class Banner {
     T5Drops = [DILUC, JEAN, KEQING, QIQI, MONA, SKYWARD_PRIDE, SKYWARD_BLADE, SKYWARD_ATLAS, SKYWARD_HARP, SKYWARD_SPINE, WOLFS_GRAVESTONE, LOST_PRAYER_TO_THE_SACRED_WINDS];
     T4Focus;
     T5Focus;
-    constructor(name, T5Focus, T4Focus) {
-        this.name = name;
+    constructor(title, T5Focus, T4Focus) {
+        this.title = title;
         this.T4Focus = T4Focus;
         this.T5Focus = T5Focus;
     }
 }
 
 class Item {
-    title;
+    name;
     img;
     quality;
-    constructor(title, quality, img) {
-        this.title = title;
+    constructor(name, quality, img) {
+        this.name = name;
         this.img = img;
         this.quality = quality;
     }
 }
 
-function getRandom(array) {
-    return array[Math.floor(Math.random() * array.length)];
-}
-
-function wish(banner, amount) {
-    roll = Math.random() * 100;
-    var results = [];
-    for (let i = 0; i < amount; i++) {
-        if(i == 0 && amount == 10) {
-            if(Math.random() > 0.5 && banner.T4Focus != null) {
-                results.push(getRandom(banner.T4Focus));
-            } else {
-                results.push(getRandom(banner.T4Drops));
-            }
-        } else {
-            if(banner.pity >= 90) {
-                if(Math.random() > 0.5 && banner.T5Focus != null) {
-                    results.push(getRandom(banner.T5Focus));
-                } else {
-                    results.push(getRandom(banner.T5Drops));
-                }
-            } else if(banner.pity >= 75) {
-                if(roll <= 1.2) {
-                    if(Math.random() > 0.5 && banner.T5Focus != null) {
-                        results.push(getRandom(banner.T5Focus));
-                    } else {
-                        results.push(getRandom(banner.T5Drops));
-                    }
-                } else if(roll <= 6.3) {
-                    if(Math.random() > 0.5 && banner.T4Focus != null) {
-                        results.push(getRandom(banner.T4Focus));
-                    } else {
-                        results.push(getRandom(banner.T4Drops));
-                    }
-                } else {
-                    results.push(getRandom(banner.T3Drops));
-                }
-            } else {
-                if(roll <= 0.6) {
-                    if(Math.random() > 0.5 && banner.T5Focus != null) {
-                        results.push(getRandom(banner.T5Focus));
-                    } else {
-                        results.push(getRandom(banner.T5Drops));
-                    }
-                } else if(roll <= 5.7) {
-                    if(Math.random() > 0.5 && banner.T4Focus != null) {
-                        results.push(getRandom(banner.T4Focus));
-                    } else {
-                        results.push(getRandom(banner.T4Drops));
-                    }
-                } else {
-                    results.push(getRandom(banner.T3Drops));
-                }
-            }
-        }
-        banner.pity++;
-    }
-    var wishQuality = 3;
-    for (let i = 0; i < results.length; i++) {
-        const element = results[i];
-        if(element.quality == 5) { 
-            banner.pity = 0;
-        }
-        if(element.quality > wishQuality) wishQuality = element.quality;
-    }
-    if(banner.pity > 90) banner.pity = 0;
-    return results;
-}
-
+//Initializations ------------------------------------------------------------------------------------
 //Event 5* Characters
 VENTI = new Item("Venti", 5, "img/chars/venti.png");
 GANYU = new Item("Ganyu", 5, "img/chars/ganyu.png");
@@ -206,7 +138,7 @@ MESSENGER = new Item("Messenger", 3, "img/weps/messenger.png");
 EBONY_BOW = new Item("Ebony Bow", 3, "img/weps/ebony_bow.png");
 
 
-PermaBanner = new Banner("Wanderlust Invocation", null, null);
+PermaBanner = new Banner("Wanderlust Invocation", [DILUC, JEAN, KEQING, QIQI, MONA, SKYWARD_PRIDE, SKYWARD_BLADE, SKYWARD_ATLAS, SKYWARD_HARP, SKYWARD_SPINE, WOLFS_GRAVESTONE, LOST_PRAYER_TO_THE_SACRED_WINDS], [NINGGUANG, SUCROSE, DIONA, RAZOR, NOELLE, LISA, AMBER, KAEYA, BARBARA, XIANGLING, BENNETT, FISCHL, CHONGYUN, BEIDOU, XINGQIU, XINYAN, FAVONIUS_WARBOW, FAVONIUS_GREATSWORD, DRAGONS_BANE, THE_FLUTE, THE_ALLEY_FLASH, SACRIFICIAL_SWORD, LIONS_ROAR, FAVONIUS_SWORD, LITHIC_SPEAR, FAVONIUS_LANCE, THE_BELL, SACRIFICIAL_GREATSWORD, RAINSLASHER, LITHIC_BLADE, WINE_AND_SONG, THE_WIDSITH, SACRIFICIAL_FRAGMENTS, FAVONIUS_CODEX, EYE_OF_PERCEPTION, THE_STRINGLESS, SACRIFICIAL_BOW, RUST, ALLEY_HUNTER]);
 WeaponBanner = new Banner("Epitome Invocation", [SKYWARD_BLADE, ELEGY_FOR_THE_END], []);
 
 VentiBanner = new Banner("Ballad in Goblets", [VENTI], [RAZOR, SUCROSE, NOELLE]);
@@ -218,4 +150,134 @@ ZhongliBanner = new Banner("Gentry of Hermitage", [ZHONGLI], [CHONGYUN, XINYAN, 
 AlbedoBanner = new Banner("Secretum Secretorum", [ALBEDO], [FISCHL, BENNETT, SUCROSE])
 XiaoBanner = new Banner("Invitation to Mundane Life", [XIAO], [DIONA, BEIDOU, XINYAN]);
 HuTaoBanner = new Banner("Moment of Bloom", [HU_TAO], [CHONGYUN, XINGQIU, XIANGLING]);
+
+//Functions ------------------------------------------------------------------------------------
+function getRandom(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function makeTenWish() {
+    var banner;
+    console.log(document.getElementById("bannerSelector").value);
+    switch (document.getElementById("bannerSelector").value) {
+        case "permanent":
+            banner = PermaBanner;
+            break;
+        case "weapon":
+            banner = WeaponBanner;
+            break;
+        case "venti":
+            banner = VentiBanner;
+            break;
+        case "ganyu":
+            banner = GanyuBanner;
+            break;
+        case "klee":
+            banner = KleeBanner;
+            break;
+        case "childe":
+            banner = ChildeBanner;
+            break;
+        case "keqing":
+            banner = KeqingBanner;
+            break;
+        case "zhongli":
+            banner = ZhongliBanner;
+            break;
+        case "albedo":
+            banner = AlbedoBanner;
+            break;
+        case "xiao":
+            banner = XiaoBanner;
+            break;
+        case "hu_tao":
+            banner = HuTaoBanner;
+            break;
+        default:
+            break;
+    }
+    resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+    results = wish(banner, 10);
+    results.forEach(element => {
+        elementHTML = document.createElement("h3");
+        elementHTML.textContent = element.name;
+        resultsDiv.appendChild(elementHTML);
+    });
+}
+
+function wish(banner, amount) {
+    var results = [];
+    pulledHighTier = false;
+    for (let i = 0; i < amount; i++) {
+        roll = Math.random() * 100;
+        if(i == 9 && amount == 10) {
+            if(!pulledHighTier) {
+                if(Math.random() > 0.5) {
+                    results.push(getRandom(banner.T4Focus));
+                } else {
+                    results.push(getRandom(banner.T4Drops));
+                }
+            } else {
+                results.push(wish(banner, 1)[0]);
+            }
+        } else {
+            if(banner.pity >= 90) {
+                pulledHighTier = true;
+                if(Math.random() > 0.5) {
+                    results.push(getRandom(banner.T5Focus));
+                } else {
+                    results.push(getRandom(banner.T5Drops));
+                }
+            } else if(banner.pity >= 75) {
+                if(roll <= 1.2) {
+                    pulledHighTier = true;
+                    if(Math.random() > 0.5) {
+                        results.push(getRandom(banner.T5Focus));
+                    } else {
+                        results.push(getRandom(banner.T5Drops));
+                    }
+                } else if(roll <= 6.3) {
+                    pulledHighTier = true;
+                    if(Math.random() > 0.5) {
+                        results.push(getRandom(banner.T4Focus));
+                    } else {
+                        results.push(getRandom(banner.T4Drops));
+                    }
+                } else {
+                    results.push(getRandom(banner.T3Drops));
+                }
+            } else {
+                if(roll <= 0.6) {
+                    pulledHighTier = true;
+                    if(Math.random() > 0.5) {
+                        results.push(getRandom(banner.T5Focus));
+                    } else {
+                        results.push(getRandom(banner.T5Drops));
+                    }
+                } else if(roll <= 5.7) {
+                    pulledHighTier = true;
+                    if(Math.random() > 0.5) {
+                        results.push(getRandom(banner.T4Focus));
+                    } else {
+                        results.push(getRandom(banner.T4Drops));
+                    }
+                } else {
+                    results.push(getRandom(banner.T3Drops));
+                }
+            }
+        }
+        banner.pity++;
+    }
+    var wishQuality = 3;
+    for (let i = 0; i < results.length; i++) {
+        const element = results[i];
+        if(element.quality == 5) { 
+            banner.pity = 0;
+        }
+        if(element.quality > wishQuality) wishQuality = element.quality;
+    }
+    if(banner.pity > 90) banner.pity = 0;
+    return results;
+}
 
