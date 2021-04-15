@@ -7,7 +7,7 @@
     </head>
     <body>
         <h1>Genshin Wish Simulator</h1>
-        <button type="button" id="wishx10" onclick="makeTenWish()">Wish x10</button>
+        <button type="button" id="wishx10" onclick="makeWish(10)">Wish x10</button>
         <select name="Banners" id="bannerSelector">
             <option value="permanent">Wanderlust Invocation</option>
             <option value="weapon">Epitome Invocation</option>
@@ -21,7 +21,11 @@
             <option value="xiao">Invitation to Mundane Life</option>
             <option value="hu_tao">Moment of Bloom</option>
         </select>
-        <div id="results">
+        <div class="container">
+            <div id="results" class="fixed">
+            </div>
+            <div id="inventory" class="flex-item">
+            </div>
         </div>
     </body>
 </html>

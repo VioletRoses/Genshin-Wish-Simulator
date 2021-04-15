@@ -137,10 +137,11 @@ RAVEN_BOW = new Item("Raven Bow", 3, "img/weps/raven_bow.png");
 MESSENGER = new Item("Messenger", 3, "img/weps/messenger.png");
 EBONY_BOW = new Item("Ebony Bow", 3, "img/weps/ebony_bow.png");
 
-
+//Permanent Banners
 PermaBanner = new Banner("Wanderlust Invocation", [DILUC, JEAN, KEQING, QIQI, MONA, SKYWARD_PRIDE, SKYWARD_BLADE, SKYWARD_ATLAS, SKYWARD_HARP, SKYWARD_SPINE, WOLFS_GRAVESTONE, LOST_PRAYER_TO_THE_SACRED_WINDS], [NINGGUANG, SUCROSE, DIONA, RAZOR, NOELLE, LISA, AMBER, KAEYA, BARBARA, XIANGLING, BENNETT, FISCHL, CHONGYUN, BEIDOU, XINGQIU, XINYAN, FAVONIUS_WARBOW, FAVONIUS_GREATSWORD, DRAGONS_BANE, THE_FLUTE, THE_ALLEY_FLASH, SACRIFICIAL_SWORD, LIONS_ROAR, FAVONIUS_SWORD, LITHIC_SPEAR, FAVONIUS_LANCE, THE_BELL, SACRIFICIAL_GREATSWORD, RAINSLASHER, LITHIC_BLADE, WINE_AND_SONG, THE_WIDSITH, SACRIFICIAL_FRAGMENTS, FAVONIUS_CODEX, EYE_OF_PERCEPTION, THE_STRINGLESS, SACRIFICIAL_BOW, RUST, ALLEY_HUNTER]);
 WeaponBanner = new Banner("Epitome Invocation", [SKYWARD_BLADE, ELEGY_FOR_THE_END], []);
 
+//Event Banners
 VentiBanner = new Banner("Ballad in Goblets", [VENTI], [RAZOR, SUCROSE, NOELLE]);
 GanyuBanner = new Banner("Adrift in the Harbor", [GANYU], [NOELLE, XINGQIU, XIANGLING]);
 KleeBanner = new Banner("Sparkling Steps", [KLEE], [NOELLE, XINGQIU, SUCROSE]);
@@ -151,12 +152,39 @@ AlbedoBanner = new Banner("Secretum Secretorum", [ALBEDO], [FISCHL, BENNETT, SUC
 XiaoBanner = new Banner("Invitation to Mundane Life", [XIAO], [DIONA, BEIDOU, XINYAN]);
 HuTaoBanner = new Banner("Moment of Bloom", [HU_TAO], [CHONGYUN, XINGQIU, XIANGLING]);
 
+//Inventory
+var inventory = [];
+
 //Functions ------------------------------------------------------------------------------------
 function getRandom(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
 
-function makeTenWish() {
+function addToInventory(item) {
+    var duplicate = false;
+    inventory.forEach(element => {
+        if(item.name == element[0].name) {
+            element[1]++;
+            duplicate = true;
+        }
+    });
+    if(!duplicate) {
+        inventory.push([item, 1]);
+    }
+    updateInventory();
+}
+
+function updateInventory() {
+    inventoryDiv = document.getElementById("inventory");
+    inventoryDiv.innerHTML = '';
+    inventory.forEach(element => {
+        entry = document.createElement('h3');
+        entry.innerHTML = element[0].name + ': ' + element[1] + 'x';
+        inventoryDiv.appendChild(entry);
+    });
+}
+
+function makeWish(amount) {
     var banner;
     console.log(document.getElementById("bannerSelector").value);
     switch (document.getElementById("bannerSelector").value) {
@@ -198,7 +226,7 @@ function makeTenWish() {
     }
     resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = "";
-    results = wish(banner, 10);
+    results = wish(banner, amount);
     results.forEach(element => {
         elementHTML = document.createElement("h3");
         elementHTML.textContent = element.name;
@@ -267,6 +295,7 @@ function wish(banner, amount) {
                 }
             }
         }
+        addToInventory(results[i]);
         banner.pity++;
     }
     var wishQuality = 3;

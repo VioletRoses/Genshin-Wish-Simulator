@@ -1,0 +1,25 @@
+body {
+    color: whitesmoke;
+    background-color: #333;
+}
+
+div {
+    padding: 10px;
+}
+
+/* IDs */
+#results {
+
+}
+
+
+/* Classes */
+.container {
+    display:flex;
+}
+.fixed {
+    width: 50%;
+}
+.flex-item {
+    flex-grow: 1;
+}
